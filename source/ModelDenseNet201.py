@@ -13,7 +13,8 @@ class ModelDenseNet201:
     image_size = 224
 
     def __init__(self):
-        if (ModelDenseNet201.__instance_model is None) and (ModelDenseNet201.model_path is not None):
+        if (ModelDenseNet201.__instance_model is None) \
+                and ((ModelDenseNet201.model_path is not None) or (ModelDenseNet201.weight_path is not None)):
             if ModelDenseNet201.model_path is not None:
                 ModelDenseNet201.__instance_model = load_model(self.model_path)
             else:

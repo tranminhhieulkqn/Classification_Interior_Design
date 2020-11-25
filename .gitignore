@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/flask,windows,pycharm+all,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask,windows,pycharm+all,python
 
+### MyFile ###
+static/model_cnn/models
+
 ### Flask ###
 instance/*
 !instance/.gitignore

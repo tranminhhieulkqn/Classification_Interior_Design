@@ -13,10 +13,12 @@ class ModelXception:
     image_size = 224
 
     def __init__(self):
-        if (ModelXception.__instance_model is None) and (ModelXception.model_path is not None):
+        if (ModelXception.__instance_model is None) \
+                and ((ModelXception.model_path is not None) or (ModelXception.weight_path is not None)):
             if ModelXception.model_path is not None:
                 ModelXception.__instance_model = load_model(self.model_path)
             else:
+                print("begin create  model")
                 model = ModelXception.__create_model()
                 model.load_weights(ModelXception.weight_path)
                 ModelXception.__instance_model = model
@@ -43,6 +45,7 @@ class ModelXception:
             Flatten(),
             Dense(cls.labels, activation='softmax')])
         model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=['accuracy'])
+        print("test create Ok")
         return model
 
     @staticmethod

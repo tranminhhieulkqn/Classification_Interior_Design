@@ -16,7 +16,7 @@ class ModelGeneral:
 
     def __init__(self):
         self.__load_labels()
-        if True:
+        if False:
             self.__load_model()
         else:
             self.__load_weight()

@@ -19,12 +19,14 @@ $(document).ready(function () {
     var dataAll = null;
 
     $("#but_upload").click(function (e) {
+        hide_show(false);
         e.preventDefault();
         var formData = new FormData();
         var files = $('#file')[0].files;
         // Check file selected or not
         if (files.length > 0) {
             formData.append('file', files[0]);
+            document.getElementById("loading").style.display = "block";
             $.ajax({
                 url: '/',
                 type: 'POST',
@@ -34,8 +36,8 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log('Success!');
                     dataAll = data
-                    hide_show(true);
                     draw_chart(data = dataAll, model_name = $('.form-control option:selected').val())
+                    hide_show(true);
                 },
             });
         } else {
@@ -67,6 +69,7 @@ $(document).ready(function () {
     }
 
     function draw_chart(data, model_name = "Xception") {
+        document.getElementById("loading").style.display = "block";
         $('#myChart').remove();
         $('#insert_chart').append('<canvas id="myChart" width="400" height="300"></canvas>');
         document.getElementById('predicted_results').innerHTML = 'Predicted results: ' + data[model_name + ' Predicted'];
@@ -107,5 +110,6 @@ $(document).ready(function () {
                 }
             }
         });
-    }
+        document.getElementById("loading").style.display = "none";
+    };
 });

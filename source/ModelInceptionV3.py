@@ -13,7 +13,8 @@ class ModelInceptionV3:
     image_size = 224
 
     def __init__(self):
-        if (ModelInceptionV3.__instance_model is None) and (ModelInceptionV3.model_path is not None):
+        if (ModelInceptionV3.__instance_model is None) \
+                and ((ModelInceptionV3.model_path is not None) or (ModelInceptionV3.weight_path is not None)):
             if ModelInceptionV3.model_path is not None:
                 ModelInceptionV3.__instance_model = load_model(self.model_path)
             else:

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodePen - Knockout JS HTML5 File Bindings with upload preview and drag and drop</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://rawgit.com/adrotec/knockout-file-bindings/master/knockout-file-bindings.css'>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/chart.css') }}">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+    <h1>
+        <a target="_blank" href="https://www.kaggle.com/hieutranminh/interior-design-classification-training-test-0">Application
+            Interior Design Classification</a>
+    </h1>
+    <form method=post enctype=multipart/form-data>
+        <div class="well" data-bind="fileDrag: fileData">
+            <div class="form-group row" style="display: flex">
+                <div style="text-align: center; width: 50%" class="col-sm-6 col-md-6">
+                    <div style="width: 100%; text-align: center; background: whitesmoke">
+                        <img style="max-width: 100%; max-height: 224px; height: 100%; align-content: center"
+                             class="img-rounded  thumb"
+                             data-bind="attr: { src: fileData().dataURL }, visible: fileData().dataURL">
+                    </div>
+                    <div id="drag_label" style="display: block; height: 100%; text-align: center;"
+                         data-bind="ifnot: fileData().dataURL">
+                        <label class="drag-label">Drag file here</label>
+                    </div>
+                </div>
+                <div style="width: 50%" class="col-sm-6 col-md-6">
+                    <input style="width: 100%" type="file" id="file" name="file" data-bind="fileInput: fileData, customFileInput: {
+                        buttonClass: 'btn btn-success',
+                        fileNameClass: 'disabled form-control',
+                        onClear: onClear,
+                    }" accept="image/*">
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; text-align: center">
+            <button id="but_upload" class="btn btn-default">Predict</button>
+        </div>
+    </form>
+    <div id="label_predicted_results" class="form-group row" style="display: none">
+        <div class="col-sm-8 col-md-8">
+            <h3 style="display: block">Predicted Results</h3>
+        </div>
+        <div class="col-sm-4 col-md-4" style="display: flex;align-items: center;padding-top: 5px">
+            <select class="form-control" id="exampleFormControlSelect">
+                <option>Xception</option>
+                <option>DenseNet201</option>
+                <option>InceptionV3</option>
+            </select>
+        </div>
+    </div>
+    <div id="form_results" style="display: none" class="well" data-bind="fileDrag: fileData">
+        <div class="form-group row">
+            <div id="insert_chart" class="col-md-8">
+                <canvas id="myChart" width="400" height="300"></canvas>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <h4 id="predicted_results">Predicted results: </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- partial -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js'></script>
+<script src='https://rawgit.com/adrotec/knockout-file-bindings/master/knockout-file-bindings.js'></script>
+<script src="{{ url_for('static', filename= 'js/script.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/chart.js') }}"></script>
+
+</body>
+<style>
+    .flex-container {
+        display: flex;
+    }
+
+    .flex-container > div {
+        width: 50%;
+        margin: 10px;
+        padding: 5px;
+    }
+</style>
+</html>

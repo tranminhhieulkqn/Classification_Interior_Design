@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask,windows,pycharm+all,python
 
 ### MyFile ###
-static/model_cnn/models
+static/model_cnn/models/
 
 ### Flask ###
 instance/*

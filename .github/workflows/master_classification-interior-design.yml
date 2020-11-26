@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@master
@@ -18,17 +18,21 @@ jobs:
     - name: Set up Python version
       uses: actions/setup-python@v1
       with:
-        python-version: '3.8'
+        python-version: '3.6'
 
-    - name: Build using AppService-Build
-      uses: azure/appservice-build@v2
-      with:
-        platform: python
-        platform-version: '3.8'
+    - name: Install Python dependencies
+      run: |
+        python3 -m venv env
+        .\env\Scripts\activate
+        pip install -r requirements.txt
+
+    - name: Zip the application files
+      run: Compress-Archive .\* app.zip
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'classification-interior-design'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_6969f18253c043a691ae88992e7e41fe }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0a3f1c9b4bfa49aa9e96e9bf17f2805f }}
+        package: '.\myapp.zip'

@@ -7,10 +7,11 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+my_model = ModelGeneral()
 
-if __name__ == 'main':
-    my_model = ModelGeneral()
-    print("Hello1")
+if (__name__ == 'main') or (__name__ == 'app'):
+    if my_model is None:
+        my_model = ModelGeneral()
 
 
 def allowed_file(filename):
@@ -46,8 +47,6 @@ def home_page():
                     "message": "File not exist!"
                 }), 404
 
-            # os.remove(image_path)
-
             return jsonify({
                 "success": True,
                 "message": "Predicted Results",
@@ -65,4 +64,5 @@ def home_page():
 
 if __name__ == '__main__':
     app.run()
-    print("Hello2")
+    if my_model is None:
+        my_model = ModelGeneral()

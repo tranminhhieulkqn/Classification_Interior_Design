@@ -1,5 +1,7 @@
+api_version: 1
 runtime: python38
-entrypoint: uwsgi --http-socket :8080 --wsgi-file main.py --callable app --master --processes 1 --threads 2
-#instance_class: F4_1G
+threadsafe: true
+instance_class: B4_1G
 #entrypoint: gunicorn -b :$PORT main:app
+#entrypoint: uwsgi --http-socket :8080 --wsgi-file main.py --callable app --master --processes 2 --threads 4
 

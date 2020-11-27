@@ -2,16 +2,10 @@ from flask import Flask, jsonify, render_template, flash, request, redirect
 
 from source.ModelGeneral import ModelGeneral
 
-UPLOAD_FOLDER = 'static/uploaded_images/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 my_model = ModelGeneral()
-
-if (__name__ == 'main') or (__name__ == 'app'):
-    if my_model is None:
-        my_model = ModelGeneral()
 
 
 def allowed_file(filename):
@@ -60,9 +54,3 @@ def home_page():
             }), 200
     else:
         return render_template('index.html')
-
-
-if __name__ == '__main__':
-    app.run()
-    if my_model is None:
-        my_model = ModelGeneral()

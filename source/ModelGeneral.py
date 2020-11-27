@@ -1,5 +1,5 @@
-import cv2
 import numpy as np
+from keras.preprocessing.image import load_img, img_to_array
 
 from source.ModelDenseNet201 import ModelDenseNet201
 from source.ModelInceptionV3 import ModelInceptionV3
@@ -62,12 +62,18 @@ class ModelGeneral:
         cls.model_densenet201 = ModelDenseNet201.get_model()
         print("Load models successfully!")
 
+    # @classmethod # Remember to install opencv
+    # def __resize_image(cls, image_path, image_size=224):
+    #     img_arr = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    #     img_arr = cv2.resize(img_arr, (image_size, image_size))  # Reshaping images to preferred size
+    #     img_arr = np.array(img_arr, dtype=cls.floatx) / 255
+    #     img_arr = img_arr.reshape(-1, image_size, image_size, 3)
+    #     return img_arr
+
     @classmethod
     def __resize_image(cls, image_path, image_size=224):
-        img_arr = cv2.imread(image_path, cv2.IMREAD_COLOR)
-        img_arr = cv2.resize(img_arr, (image_size, image_size))  # Reshaping images to preferred size
-        img_arr = np.array(img_arr, dtype=cls.floatx) / 255
-        img_arr = img_arr.reshape(-1, image_size, image_size, 3)
+        img_arr = load_img(path=image_path, color_mode="rgb", target_size=(image_size, image_size))
+        img_arr = np.array([img_to_array(img_arr)[..., ::-1]], dtype=cls.floatx) / 255
         return img_arr
 
     @classmethod

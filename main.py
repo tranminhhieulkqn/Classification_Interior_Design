@@ -5,11 +5,13 @@ from werkzeug.utils import secure_filename
 
 from source.ModelGeneral import ModelGeneral
 
-UPLOAD_FOLDER = 'static/uploaded_images/'
+#UPLOAD_FOLDER = 'static/uploaded_images/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['BUCKET'] = 'imguploaded'
+app.config['UPLOAD_FOLDER'] = '/tmp'
 
 if __name__ == 'app':
     my_model = ModelGeneral()
@@ -19,6 +21,20 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def save_picture(form_picture,name):
+    picture_fn = secure_filename(name + '.jpg')
+    picture_path = os.path.join(app.config['UPLOAD_FOLDER'], picture_fn)
+    output_size = (1000,1000)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(app.config['BUCKET'])
+    blob = bucket.blob('static/uploaded_images/'+ picture_fn)
+    blob.upload_from_filename(picture_path)
+
+    return picture_path
 
 @app.route('/', methods=['GET', 'POST'])
 def home_page():

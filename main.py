@@ -2,7 +2,10 @@ import os
 
 from flask import Flask, jsonify, render_template, flash, request, redirect
 from werkzeug.utils import secure_filename
-
+from PIL import Image
+from django.core.files.storage import default_storage
+from google.cloud import storage
+from google.cloud.storage import Blob
 from source.ModelGeneral import ModelGeneral
 
 #UPLOAD_FOLDER = 'static/uploaded_images/'
@@ -50,9 +53,14 @@ def home_page():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
+            #filename = secure_filename(file.filename)
+            #image_path = app.config['UPLOAD_FOLDER'] + filename
+            #file.save(image_path)
+
+            #filename = save_picture(form.image.data,file.filename)
             filename = secure_filename(file.filename)
-            image_path = app.config['UPLOAD_FOLDER'] + filename
-            file.save(image_path)
+            image_path = save_picture(filename,file.filename)
+            #file.save(image_path)
 
             try:
                 labels = my_model.get_lables()

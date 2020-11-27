@@ -1,7 +1,4 @@
-import os
-
 from flask import Flask, jsonify, render_template, flash, request, redirect
-from werkzeug.utils import secure_filename
 
 from source.ModelGeneral import ModelGeneral
 
@@ -11,8 +8,9 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-if __name__ == 'app':
+if __name__ == 'main':
     my_model = ModelGeneral()
+    print("Hello1")
 
 
 def allowed_file(filename):
@@ -34,22 +32,21 @@ def home_page():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            image_path = app.config['UPLOAD_FOLDER'] + filename
-            file.save(image_path)
-
             try:
                 labels = my_model.get_lables()
-                xception = my_model.prediction(model="Xception", image_path=image_path)
-                inceptionv3 = my_model.prediction(model="InceptionV3", image_path=image_path)
-                densenet201 = my_model.prediction(model="DenseNet201", image_path=image_path)
-            except:
+                xception = my_model.prediction(model="Xception",
+                                               image_request=file)
+                inceptionv3 = my_model.prediction(model="InceptionV3",
+                                                  image_request=file)
+                densenet201 = my_model.prediction(model="DenseNet201",
+                                                  image_request=file)
+            except():
                 return jsonify({
                     "success": False,
                     "message": "File not exist!"
                 }), 404
 
-            os.remove(image_path)
+            # os.remove(image_path)
 
             return jsonify({
                 "success": True,
@@ -68,3 +65,4 @@ def home_page():
 
 if __name__ == '__main__':
     app.run()
+    print("Hello2")

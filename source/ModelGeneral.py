@@ -1,5 +1,6 @@
 import numpy as np
-from keras.preprocessing.image import load_img, img_to_array
+from PIL import Image
+from keras.preprocessing.image import img_to_array
 
 from source.ModelDenseNet201 import ModelDenseNet201
 from source.ModelInceptionV3 import ModelInceptionV3
@@ -71,28 +72,29 @@ class ModelGeneral:
     #     return img_arr
 
     @classmethod
-    def __resize_image(cls, image_path, image_size=224):
-        img_arr = load_img(path=image_path, color_mode="rgb", target_size=(image_size, image_size))
+    def __resize_image(cls, image_request, image_size=224):
+        # resize the input image and preprocess it
+        img_arr = Image.open(image_request).convert("RGB").resize((image_size, image_size))
         img_arr = np.array([img_to_array(img_arr)[..., ::-1]], dtype=cls.floatx) / 255
         return img_arr
 
     @classmethod
-    def __prediction_classify(cls, model, path):
-        img_arr = cls.__resize_image(path, cls.image_size)
+    def __prediction_classify(cls, model, image_request):
+        img_arr = cls.__resize_image(image_request, cls.image_size)
         predictions = model.predict(img_arr)
         classes = np.argmax(predictions, axis=1)
         return [np.round(predictions[0] * 100, 2), cls.labels[classes[0]]]
 
     @classmethod
-    def prediction(cls, model="Xception", image_path=None):
+    def prediction(cls, model="Xception", image_request=None):
         if model == "Xception":
             return cls.__prediction_classify(model=ModelXception.get_model(),
-                                             path=image_path)
+                                             image_request=image_request)
         elif model == "InceptionV3":
             return cls.__prediction_classify(model=ModelInceptionV3.get_model(),
-                                             path=image_path)
+                                             image_request=image_request)
         elif model == "DenseNet201":
             return cls.__prediction_classify(model=ModelDenseNet201.get_model(),
-                                             path=image_path)
+                                             image_request=image_request)
         else:
             return None

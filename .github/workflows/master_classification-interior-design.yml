@@ -18,11 +18,11 @@ jobs:
     - name: Set up Python version
       uses: actions/setup-python@v1
       with:
-        python-version: '3.8'
+        python-version: '3.6'
 
     - name: Install Python dependencies
       run: |
-        python3 -m venv env
+        python -m venv env
         .\env\Scripts\activate
         pip install -r requirements.txt
 
@@ -34,5 +34,5 @@ jobs:
       with:
         app-name: 'classification-interior-design'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0a3f1c9b4bfa49aa9e96e9bf17f2805f }}
-        package: '.\myapp.zip'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_fceb7e9c6681446d900033a2d763c90b }}
+        package: '.\app.zip'

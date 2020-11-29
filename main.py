@@ -5,7 +5,10 @@ from source.ModelGeneral import ModelGeneral
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
-my_model = ModelGeneral()
+my_model = None
+
+if my_model is None:
+    my_model = ModelGeneral()
 
 
 def allowed_file(filename):
@@ -54,3 +57,7 @@ def home_page():
             }), 200
     else:
         return render_template('index.html')
+
+
+if __name__ == '__main__':
+    my_model = ModelGeneral()

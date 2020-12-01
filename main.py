@@ -1,6 +1,13 @@
+import tensorflow as tf
 from flask import Flask, jsonify, render_template, flash, request, redirect
 
 from source.ModelGeneral import ModelGeneral
+
+print(tf.__version__)
+
+# Set CPU as available physical device
+my_devices = tf.config.experimental.list_physical_devices(device_type='CPU')
+tf.config.experimental.set_visible_devices(devices=my_devices, device_type='CPU')
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -60,4 +67,5 @@ def home_page():
 
 
 if __name__ == '__main__':
-    my_model = ModelGeneral()
+    if my_model is None:
+        my_model = ModelGeneral()

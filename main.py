@@ -3,7 +3,7 @@ from flask import Flask, jsonify, render_template, flash, request, redirect
 
 from source.ModelGeneral import ModelGeneral
 
-print(tf.__version__)
+print("Tensorflow version : " + tf.__version__)
 
 # Set CPU as available physical device
 my_devices = tf.config.experimental.list_physical_devices(device_type='CPU')
